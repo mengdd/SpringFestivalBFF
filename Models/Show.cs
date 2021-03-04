@@ -2,9 +2,9 @@ namespace SpringFestivalBFF.Models
 {
     public class Show
     {
-        public int Id { get; set; }
+        public string Year { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
-        public int Order { get; set; }
-        public int Votes { get; set; }
+        public int Vote { get; set; }
     }
 }

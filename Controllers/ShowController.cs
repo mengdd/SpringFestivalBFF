@@ -1,8 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SpringFestivalBFF.Models;
+using SpringFestivalBFF.Services;
 
 namespace SpringFestivalBFF.Controllers
 {
@@ -10,18 +11,21 @@ namespace SpringFestivalBFF.Controllers
     [Route("[controller]")]
     public class ShowController : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<Show> Get()
+        private readonly ILogger<ShowController> _logger;
+        private readonly IShowService _service;
+
+        public ShowController(IShowService service, ILogger<ShowController> logger)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Show()
-                {
-                    Id = index,
-                    Votes = rng.Next(-20, 55),
-                    Name = $"Show: {index}",
-                    Order = index
-                })
-                .ToArray();
+            _service = service;
+            _logger = logger;
         }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Show>>> GetShowsList()
+        {
+            // TODO: 这个地方Task<ActionResult<IEnumerable<Show>>> 就不行了, 为什么
+            return await _service.GetShowsAsync();
+        }
+
     }
 }
