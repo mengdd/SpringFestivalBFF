@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SpringFestivalBFF.Clients;
+using SpringFestivalBFF.Configurations;
 using SpringFestivalBFF.Services;
 
 namespace SpringFestivalBFF
@@ -21,7 +22,6 @@ namespace SpringFestivalBFF
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -30,7 +30,9 @@ namespace SpringFestivalBFF
             services.AddHttpClient();
             services.AddScoped<IShowService, ShowService>();
             services.AddScoped<IApiClient, ApiClient>();
-            
+
+            var serviceConfiguration = Configuration.GetSection("SpringFestivalService");
+            services.Configure<SpringFestivalServiceConfiguration>(serviceConfiguration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
